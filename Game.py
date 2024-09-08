@@ -190,7 +190,7 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    simulationStarted = True
+                    simulationStarted = not simulationStarted
 
                 if event.key == pygame.K_LEFT:
                     sleepTime += 0.3*sleepTime
