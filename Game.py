@@ -1,5 +1,6 @@
 import pygame
 import pygame.freetype
+from decimal import Decimal
 import time
 
 WHITE =     (248, 240, 225)
@@ -159,6 +160,7 @@ def main():
     my_font.render_to(screen, (width+10, 30), "add/remove cells", WHITE)
     my_font.render_to(screen, (width+10, 70), "Press L/R arrow keys", WHITE)
     my_font.render_to(screen, (width+10, 90), "to slow/speed cell iterations", WHITE)
+    my_font.render_to(screen, (width+10, 110), f'Time between iterations: {sleepTime}' , WHITE)
     my_font.render_to(screen, (width+10, height-50), "Press space to start simulation", WHITE)
     pygame.display.update()
 
@@ -177,6 +179,7 @@ def main():
             time.sleep(sleepTime)
             reproduce(realgrid)
             drawGrid(realgrid)
+            
             pygame.display.update()
 
         for event in ev:
@@ -192,10 +195,14 @@ def main():
                 if event.key == pygame.K_LEFT:
                     sleepTime += 0.3*sleepTime
                     print(f'Sleep time is {sleepTime}')
+                    pygame.draw.rect(screen, RED, (width+10, 110, 300, 50))
+                    my_font.render_to(screen, (width+10, 110), f'Time between iterations: {round(sleepTime, 2)}s' , WHITE)
 
                 if event.key == pygame.K_RIGHT:
                     sleepTime -= 0.3*sleepTime
                     print(f'Sleep time is {sleepTime}')
+                    pygame.draw.rect(screen, RED, (width+10, 110, 300, 50))
+                    my_font.render_to(screen, (width+10, 110), f'Time between iterations: {round(sleepTime, 2)}s' , WHITE)
 
 
 
