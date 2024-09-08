@@ -190,7 +190,10 @@ def main():
                 x = int(x // cellsize)
                 y = int(y // cellsize)
                 print(f'Cell clicked at {x}, {y}')
-                realgrid.grid[y*realgrid.gridWidth + x].state = 1
+                if realgrid.grid[y*realgrid.gridWidth + x].state == 1:
+                    realgrid.grid[y*realgrid.gridWidth + x].state = 0
+                else: 
+                    realgrid.grid[y*realgrid.gridWidth + x].state = 1
                 drawGrid(realgrid)
                 pygame.display.update()
 
