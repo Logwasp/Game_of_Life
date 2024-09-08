@@ -1,12 +1,14 @@
 import pygame
+import pygame.freetype
 import time
 
-WHITE =     (255, 255, 255)
+WHITE =     (248, 240, 225)
 BLUE =      (  0,   0, 255)
 GREEN =     (  0, 255,   0)
-RED =       (255,   0,   0)
-BLACK = (  0,   0,  0)
+RED =       (200,   16,   46)
+BLACK = (  39,   38,  39)
 (width, height) = (800, 800)
+sleepTime = 0.5
 
 running = True
 simulationStarted = False
@@ -132,13 +134,15 @@ def reproduce(grid):
 
 
 def main():
-    global running, screen, simulationStarted
+    global running, screen, simulationStarted, sleepTime
     
     #Initialize pygame
     pygame.init()
-    screen = pygame.display.set_mode((width, height))
+    pygame.font.init()
+    my_font = pygame.freetype.SysFont('Arial', 20)
+    screen = pygame.display.set_mode((width+300, height))
     pygame.display.set_caption("Game of Life")
-    screen.fill(BLACK)
+    screen.fill(RED)
 
     #Create grid
     realgrid = Grid(40, 40)
@@ -151,6 +155,11 @@ def main():
     realgrid.grid[167].state = 1
 
     drawGrid(realgrid)
+    my_font.render_to(screen, (width+10, 10), "Press On the Surface to", WHITE)
+    my_font.render_to(screen, (width+10, 30), "add/remove cells", WHITE)
+    my_font.render_to(screen, (width+10, 70), "Press L/R arrow keys", WHITE)
+    my_font.render_to(screen, (width+10, 90), "to slow/speed cell iterations", WHITE)
+    my_font.render_to(screen, (width+10, height-50), "Press space to start simulation", WHITE)
     pygame.display.update()
 
     print(countNeighbors(realgrid, realgrid.grid[47]))
@@ -165,7 +174,7 @@ def main():
 
 
         if simulationStarted:
-            time.sleep(.4)
+            time.sleep(sleepTime)
             reproduce(realgrid)
             drawGrid(realgrid)
             pygame.display.update()
@@ -180,6 +189,14 @@ def main():
                 if event.key == pygame.K_SPACE:
                     simulationStarted = True
 
+                if event.key == pygame.K_LEFT:
+                    sleepTime += 0.3*sleepTime
+                    print(f'Sleep time is {sleepTime}')
+
+                if event.key == pygame.K_RIGHT:
+                    sleepTime -= 0.3*sleepTime
+                    print(f'Sleep time is {sleepTime}')
+
 
 
             if event.type == pygame.MOUSEBUTTONDOWN and not simulationStarted:
@@ -190,6 +207,8 @@ def main():
                 x = int(x // cellsize)
                 y = int(y // cellsize)
                 print(f'Cell clicked at {x}, {y}')
+                if getPos()[0] > width:
+                    continue
                 if realgrid.grid[y*realgrid.gridWidth + x].state == 1:
                     realgrid.grid[y*realgrid.gridWidth + x].state = 0
                 else: 
